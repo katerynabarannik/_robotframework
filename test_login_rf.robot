@@ -3,7 +3,7 @@ Library         SeleniumLibrary
 Documentation       Suite description #automated tests for scout website
 
 *** Variables ***
-${LOGIN URL}            https://scouts-test.futbolkolektyw.pl/en
+${LOGIN URL}            https://scouts.futbolkolektyw.pl/en/
 ${BROWSER}              Chrome
 ${SIGNINBUTTON}         xpath=//*/button/span[1]
 ${EMAILINPUT}           xpath=//*[@id='login']
@@ -13,6 +13,7 @@ ${LANGUAGEDROPDOWN}     xpath=//*[@aria-haspopup]
 ${POLISH}               xpath=//*[@data-value='pl']
 ${ENGLISH}              xpath=//*[@data-value='en']
 ${FAIlMESSAGE}          xpath=//div[3]/span
+${HEADEROFBOX}          xpath = //*/div[1]/h5
 
 @{languages}            Polish      English
 
@@ -21,13 +22,13 @@ Login to the system
     Open login page
     Type in email
     Type in password
-    Click On The Submit Button
+    Click On The Sign In Button
     Assert dashboard
     [Teardown]    Close Browser
 
 Login to the system with empty fields
     Open Login Page
-    Click On The Submit Button
+    Click On The Sign In Button
     Assert message
     [Teardown]    Close Browser
 
@@ -35,7 +36,7 @@ Login to the system with invalid password
     Open login Page
     Type in email
     Type in invalid password
-    Click On The Submit Button
+    Click On The Sign In Button
     Assert invalid password message
     [Teardown]    Close Browser
 
@@ -49,7 +50,10 @@ Change language
     Assert title in polish
     [Teardown]    Close Browser
 
-
+Check header of the box
+    Open Login Page
+    Assert header
+    [Teardown]    Close Browser
 
 *** Keywords ***
 Open login page
@@ -61,8 +65,8 @@ Type in password
     Input Text      ${PASSWORDINPUT}   Test-1234
 Type in invalid password
     Input Text      ${PASSWORDINPUT}   Rest
-Click on the submit button
-    Click Element       xpath=//*/button/span[1]
+Click On The Sign In Button
+    Click Element       ${SIGNINBUTTON}
 Assert dashboard
     Wait Until Element Is Visible       ${PAGELOGO}
     Title Should Be      Scouts panel
@@ -83,6 +87,8 @@ Assert invalid password message
     Wait Until Element Is Visible     ${FAIlMESSAGE}
     Element Text Should Be    ${FAIlMESSAGE}   Identifier or password invalid.
     Capture Page Screenshot    screenshot_${TEST NAME}.png
-
+Assert header
+    Wait Until Element Is Visible       ${HEADEROFBOX}
+    Element Text Should Be    ${HEADEROFBOX}       Scouts Panel
 
 

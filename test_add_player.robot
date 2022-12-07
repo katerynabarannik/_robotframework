@@ -3,14 +3,14 @@ Library         SeleniumLibrary
 Documentation       Suite description #automated tests for scout website
 
 *** Variables ***
-${LOGIN URL}                https://scouts-test.futbolkolektyw.pl/en
+${LOGIN URL}                https://scouts.futbolkolektyw.pl/en
 ${BROWSER}                  Chrome
 ${SIGNINBUTTON}             xpath = //*/button/span[1]
 ${EMAILINPUT}               xpath = //*[@id='login']
 ${PASSWORDINPUT}            xpath = //input[@type='password']
 ${PAGELOGO}                 xpath = //*[@title='Logo Scouts Panel']
 ${ADDPLAYERBUTTON}          xpath = //*/div[2]//button/span[1]
-${ADDPLAYER URL}            https://scouts-test.futbolkolektyw.pl/en/players/add
+${ADDPLAYER URL}            https://scouts.futbolkolektyw.pl/en/players/add
 ${NAMEINPUT}                xpath = //*[@name='name']
 ${SURNAMEINPUT}             xpath = //*[@name='surname']
 ${AGEINPUT}                 xpath = //*[@name='age']
@@ -104,13 +104,14 @@ Provided precondition
     Click Element       xpath=//*/button/span[1]
 
 Click On The Add Player Button
-    Wait Until Element Is Visible       ${PAGELOGO}
+    Wait Until Element Is Visible       ${LASTCREATEDPLAYER}
+    Sleep   2
     Click Element       ${ADDPLAYERBUTTON}
 Type In Name
     Wait Until Element Is Visible       ${LEGDROPDOWN}
-    Input Text          ${NAMEINPUT}        Andriy
+    Input Text          ${NAMEINPUT}        Manuel
 Type In Surname
-    Input Text          ${SURNAMEINPUT}         Shevchenk0
+    Input Text          ${SURNAMEINPUT}         Nuer
 Type In Age
     Input Text          ${AGEINPUT}     09291976
 Type In Main Position
@@ -152,13 +153,16 @@ Select Opole
 Type In Achivements
     Input Text          ${ACHIEVEMENTSINPUT}        Golden Ball
 Click On The Add Youtube Button
+    Scroll Element Into View        ${ADDYOUTUBELINKBUTTON}
+    Sleep    4
     Click Element       ${ADDYOUTUBELINKBUTTON}
 Add Link
     Input Text          ${YOUTUBEINPUT}         https://www.youtube.com/watch?v=rPoTSLYpHWI
 Assert Title Of The Page
-    Title Should Be     Add player
+    Sleep    5
+    Title Should Be     Edit player Manuel Nuer
 Assert new player in dashboard
     Click Element       ${MAINPAGE}
     Wait Until Element Is Visible    ${PAGELOGO}
-    Element Text Should Be    ${LASTCREATEDPLAYER}      ANDRIY SHEVCHENK0
+    Element Text Should Be    ${LASTCREATEDPLAYER}      MANUEL NUER
     Capture Page Screenshot     screenshot_${TEST NAME}.png
